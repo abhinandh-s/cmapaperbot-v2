@@ -3,6 +3,8 @@ use tracing_subscriber::{filter::LevelFilter, fmt::time::UtcTime, prelude::*};
 use tracing_web::MakeConsoleWriter;
 use worker::*;
 
+mod consts;
+
 // ---------- Telegram types (only the fields we need) ----------
 // Serde ignores unknown JSON fields, so Telegram adding fields won't break us.
 
@@ -28,6 +30,16 @@ struct SendMessage {
     method: &'static str,
     chat_id: i64,
     text: String,
+}
+
+macro_rules! send_message {
+    ($chat_id:expr, $text:expr) => {
+        SendMessage {
+            method: "sendMessage",
+            chat_id: $chat_id,
+            text: $text.into(),
+        }
+    };
 }
 
 // ---------- Tracing setup: runs once when the Worker loads ----------
@@ -92,7 +104,8 @@ fn handle(update: &Update) -> Option<SendMessage> {
     tracing::info!(chat_id = msg.chat.id, command, "received message");
 
     match command {
-        "/start" => Some(SendMessage {
+        "/start" => Some(sent_msg!(msg.chat.id, const::start())),
+       "/start_old" => Some(SendMessage {
             method: "sendMessage",
             chat_id: msg.chat.id,
             text: "Hello! I'm alive on Cloudflare Workers.".to_string(),
