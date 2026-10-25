@@ -20,5 +20,5 @@ time = { version = "0.3", features = ['wasm-bindgen'] }
 [profile.release]
 opt-level = "s"
 lto = true
-strip = true
+strip = false # must
 codegen-units = 1
