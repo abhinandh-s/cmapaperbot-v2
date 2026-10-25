@@ -57,7 +57,7 @@ async fn fetch(req: Request, env: Env, _ctx: Context) -> Result<Response> {
 
 async fn webhook(mut req: Request, ctx: RouteContext<()>) -> Result<Response> {
     // 1. Only accept requests carrying the secret we gave Telegram in setWebhook.
-    let expected = ctx.secret("WEBHOOK_SECRET")?.to_string();
+    let expected = ctx.var("TELEGRAM_TOKEN")?.to_string();
     let got = req.headers().get("X-Telegram-Bot-Api-Secret-Token")?;
     if got.as_deref() != Some(expected.as_str()) {
         tracing::warn!("rejected request: bad or missing secret token");
