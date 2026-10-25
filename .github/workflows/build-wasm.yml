@@ -1,0 +1,55 @@
+name: Build Wasm
+
+on:
+  push:
+    paths:
+    #  - 'src/**'
+    branches: [ master ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  build-and-commit:
+    name: Build Rust to Wasm
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-unknown-unknown
+
+      - name: Rust Cache
+        uses: Swatinem/rust-cache@v2
+
+      - name: Build Wasm
+        run: cargo install cargo-generate
+
+      - name: Install and Run Tree
+        run: |
+          sudo apt-get update && sudo apt-get install -y tree
+          echo "--- DIRECTORY STRUCTURE ---"
+          tree -a -L 3
+          echo "--- GIT STATUS ---"
+          # FIX: Remove 'lib/' from root .gitignore so git can see it
+          sed -i '/lib/d' .gitignore || true
+          
+          # FIX: Delete the .gitignore inside the lib folder if wasmbuild created one
+          rm -f lib/.gitignore || true
+          git status
+
+      - name: Commit generated files
+        uses: stefanzweifel/git-auto-commit-action@v5
+        # Adding continue-on-error temporarily so the workflow doesn't fail 
+        # while we are just trying to read the tree output!
+        continue-on-error: true 
+        with:
+          commit_message: "chore: compile rust to wasm"
+          add_options: '-f'
+          file_pattern: 'lib/ .gitignore' 
