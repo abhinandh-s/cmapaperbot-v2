@@ -104,7 +104,7 @@ fn handle(update: &Update) -> Option<SendMessage> {
     tracing::info!(chat_id = msg.chat.id, command, "received message");
 
     match command {
-        "/start" => Some(send_message!(msg.chat.id, const::start())),
+        "/start" => Some(send_message!(msg.chat.id, consts::start())),
        "/start_old" => Some(SendMessage {
             method: "sendMessage",
             chat_id: msg.chat.id,
