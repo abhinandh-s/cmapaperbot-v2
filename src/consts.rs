@@ -3,7 +3,7 @@ pub fn privacy_policy() -> String {
 }
 
 pub fn support() -> String {
-    include_str!("../docs/support.md").into()
+    include_str!("../docs/cmds/support.md").into()
 }
 
 pub fn status() -> String {
