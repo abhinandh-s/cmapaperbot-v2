@@ -29,7 +29,9 @@ jobs:
         uses: Swatinem/rust-cache@v2
 
       - name: Build Wasm
-        run: cargo install cargo-generate
+        run: |
+          cargo install cargo-generate
+          cargo generate cloudflare/workers-rs
 
       - name: Install and Run Tree
         run: |
