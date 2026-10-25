@@ -25,13 +25,21 @@ jobs:
         with:
           targets: wasm32-unknown-unknown
 
+      - name: Install cargo-generate
+        uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-generate
+
+
       - name: Rust Cache
         uses: Swatinem/rust-cache@v2
 
-      - name: Build Wasm
+      - name: generate Project
         run: |
-          cargo install cargo-generate
-          cargo generate cloudflare/workers-rs
+          cargo generate cloudflare/workers-rs \
+            --name cmapaperbot \
+            --silent \
+            --destination .
 
       - name: Install and Run Tree
         run: |
