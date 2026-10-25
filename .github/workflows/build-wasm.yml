@@ -62,4 +62,4 @@ jobs:
         with:
           commit_message: "chore: compile rust to wasm"
           add_options: '-f'
-          file_pattern: 'lib/ .gitignore' 
+          file_pattern: 'cmapaperbot/ .gitignore' 
