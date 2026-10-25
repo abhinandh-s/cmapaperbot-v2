@@ -40,6 +40,13 @@ macro_rules! send_message {
             text: $text.into(),
         }
     };
+    ($method:expr, $chat_id:expr, $text:expr) => {
+        SendMessage {
+            method: $method,
+            chat_id: $chat_id,
+            text: $text.into(),
+        }
+    };
 }
 
 // ---------- Tracing setup: runs once when the Worker loads ----------
