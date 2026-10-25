@@ -11,12 +11,7 @@ env:
 jobs:
   test:
     name: Build & Test
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: ubuntu-latest
-        toolchain: stable  
-
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v5
 
