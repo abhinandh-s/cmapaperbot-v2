@@ -1,10 +1,10 @@
 name: Build Wasm
 
 on:
-  push:
-    paths:
+  # push:
+   # paths:
     #  - 'src/**'
-    branches: [ master ]
+    # branches: [ master ]
   workflow_dispatch:
 
 permissions:
